@@ -16,7 +16,7 @@ def calculate_tax(salary):
     total_tax = float(data[0]) + float(data[8]) - float(data[-2])
     net_annual_salary = float(salary) + standard_deduction - total_tax
     net_monthly_salary = net_annual_salary / 12
-     return total_tax, net_annual_salary, net_monthly_salary
+    return total_tax, net_annual_salary, net_monthly_salary
 
 @csrf_exempt
 def tax_calculator(request):
