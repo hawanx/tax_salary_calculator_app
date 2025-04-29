@@ -12,6 +12,7 @@ def calculate_tax(salary):
     payload = f"{{txtSalary: \"{salary}\",txtIFHProperty: \"0\",txtBIncome: \"0\",txtOthers: \"0\",txtOtherIncome: \"0\",txtDUs80: \"0\",txtChild: \"0\",txtParent: \"0\",txtOtherDeduction: \"0\",txt20Tax: \"0\",txt10Tax: \"0\",txtSOWSTTaxpaid: \"0\",txtWFCountries: \"0\",txtAIncome: \"0\",rdoLstStatus: \"Individual\",rdoLstComType: \"Domestic\",rdoIndstatus: \"O\",fyear: \"2025\",ded80tta: \"-99999\",TURNOVER: \"0\",txtnew20Taxshort: \"0\",txtnew12Taxlong: \"0\",flag1: 0,flag2: 0,sflag1: \"\",sflag2: \"\"\r\n}}"
     headers = {'content-type': 'application/json; charset=UTF-8'}
     response = requests.request("POST", url, headers=headers, data=payload)
+    print(response ,"RESPONSE-Text=" response.text)
     data = json.loads(response.text)["d"].split(",")
     total_tax = float(data[0]) + float(data[8]) - float(data[-2])
     net_annual_salary = float(salary) + standard_deduction - total_tax
