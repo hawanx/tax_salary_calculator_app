@@ -74,8 +74,8 @@
         <h2>Tax Calculator</h2>
         <form method="post">
             {% csrf_token %}
-            <input type="number" name="monthly_salary" step="0.01" placeholder="Monthly Salary" required>
-            <input type="number" name="epf_amount" step="0.01" placeholder="EPF Amount" required>
+            <input type="number" name="monthly_salary" step="0.01" placeholder="Monthly Salary" value="{{ monthly_salary }}" required>
+            <input type="number" name="epf_amount" step="0.01" placeholder="EPF Amount" value="{{ epf_amount }}" required>
             <button type="submit">Calculate</button>
         </form>
         {% if result %}

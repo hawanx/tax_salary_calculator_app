@@ -16,23 +16,32 @@ def calculate_tax(salary):
     total_tax = float(data[0]) + float(data[8]) - float(data[-2])
     net_annual_salary = float(salary) + standard_deduction - total_tax
     net_monthly_salary = net_annual_salary / 12
-    return total_tax, net_annual_salary, net_monthly_salary
+     return total_tax, net_annual_salary, net_monthly_salary
 
 @csrf_exempt
 def tax_calculator(request):
     result = None
+    monthly_salary = request.POST.get('monthly_salary', '')
+    epf_amount = request.POST.get('epf_amount', '')
+    
     if request.method == 'POST':
         try:
-            monthly_salary = float(request.POST.get('monthly_salary', 0))
-            epf_amount = float(request.POST.get('epf_amount', 0))
-            total_salary = monthly_salary + epf_amount
+            monthly_salary_float = float(monthly_salary)
+            epf_amount_float = float(epf_amount)
+            total_salary = monthly_salary_float + epf_amount_float
             annual_salary = 12 * total_salary
             total_tax, net_annual_salary, net_monthly_salary = calculate_tax(annual_salary - standard_deduction)
             result = {
                 'total_tax': f"{total_tax:.0f}",
-                'net_monthly_salary': f"{net_monthly_salary - epf_amount:.0f}",
+                'net_monthly_salary': f"{net_monthly_salary - epf_amount_float:.0f}",
                 'net_money': f"{net_monthly_salary:.0f}"
             }
         except Exception as e:
             result = {'error': str(e)}
-    return render(request, 'calculator/tax_calculator.html', {'result': result})
+    
+    context = {
+        'result': result,
+        'monthly_salary': monthly_salary,
+        'epf_amount': epf_amount
+    }
+    return render(request, 'calculator/tax_calculator.html', context)
