@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Calculator</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .glass-container {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 2.5rem 2rem;
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        input[type="number"] {
+            padding: 0.7rem;
+            border-radius: 10px;
+            border: 1px solid #b0c4de;
+            outline: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.7);
+        }
+        button {
+            padding: 0.7rem;
+            border-radius: 10px;
+            border: none;
+            background: #6dd5ed;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #2193b0;
+        }
+        .result {
+            margin-top: 2rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 12px;
+            padding: 1rem;
+            color: #222;
+            font-size: 1.1rem;
+        }
+        .error {
+            color: #b00020;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-container">
+        <h2>Tax Calculator</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="number" name="monthly_salary" step="0.01" placeholder="Monthly Salary" required>
+            <input type="number" name="epf_amount" step="0.01" placeholder="EPF Amount" required>
+            <button type="submit">Calculate</button>
+        </form>
+        {% if result %}
+            {% if result.error %}
+                <div class="error">Error: {{ result.error }}</div>
+            {% else %}
+                <div class="result">
+                    <div><strong>Total Tax:</strong> ₹{{ result.total_tax }}</div>
+                    <div><strong>Net Monthly Salary (after EPF):</strong> ₹{{ result.net_monthly_salary }}</div>
+                    <div><strong>Net Money (before EPF):</strong> ₹{{ result.net_money }}</div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html> 
